@@ -29,7 +29,7 @@ async def signup(request: Request, user: UserBody, csrf_protect: CsrfProtect = D
     # - 作成されたユーザー情報を返す。
 
     csrf_token = csrf_protect.get_csrf_from_headers(request.headers)
-    csrf_protect.verify_csrf(csrf_token)
+    csrf_protect.validate_csrf(csrf_token)
     user = jsonable_encoder(user)
     new_user = await db_signup(user)
     return new_user
@@ -42,7 +42,7 @@ async def login(request: Request, response: Response, user: UserBody, csrf_prote
     # - ユーザー情報をエンコードし、データベースで認証を行う。
     # - 成功した場合、JWTトークンを生成し、クッキーにセットして返す。
     csrf_token = csrf_protect.get_csrf_from_headers(request.headers)
-    csrf_protect.verify_csrf(csrf_token)
+    csrf_protect.validate_csrf(csrf_token)
     user = jsonable_encoder(user)
     token = await db_login(user)
     response.set_cookie(
@@ -57,7 +57,7 @@ def logout(response: Response, request: Request, csrf_protect: CsrfProtect = Dep
     # - CSRFトークンを検証し、リクエストが正当であることを確認。
     # - クッキーに保存されているJWTトークンを削除し、ユーザーをログアウトさせる。
     csrf_token = csrf_protect.get_csrf_from_headers(request.headers)
-    csrf_protect.verify_csrf(csrf_token)
+    csrf_protect.validate_csrf(csrf_token)
     response.set_cookie(
         key="access_token", value="", httponly=True, samesite="none", secure=True
     )
