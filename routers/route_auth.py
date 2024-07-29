@@ -16,7 +16,7 @@ auth = AuthJwtCsrf()
 def get_csrf(request: Request, csrf_protect: CsrfProtect = Depends()):
     # CSRFトークンを生成して返すエンドポイント。
     # フロントエンドがこのトークンを使用して、CSRF攻撃から保護する。
-    csrf_token = csrf_protect.generate_csrf_tokens()
+    csrf_token = csrf_protect.generate_csrf()
     res = {"csrf_token": csrf_token}
     return res
 
