@@ -32,7 +32,7 @@ class AuthJwtCsrf():
         # JWTを生成し、返す。トークンは5分間有効で、
         # HS256アルゴリズムで署名される。
         payload = {
-            'exp': datetime.utcnow() + timedelta(days=0, minutes=5),
+            'exp': datetime.utcnow() + timedelta(hours=1),
             'iat': datetime.utcnow(),
             'sub': email
         }
@@ -74,10 +74,10 @@ class AuthJwtCsrf():
         # 新しいトークンと主体（ユーザーの識別子）をタプルとして返す。
         subject = self.verify_jwt(request)
         new_token = self.encode_jwt(subject)
-        return subject, new_token
+        return new_token, subject
 
 
-    def verify_csrf_update_jwt(self, request, csrf_token, headers) -> str:
+    def verify_csrf_update_jwt(self, request, csrf_protect, headers) -> str:
         # CSRFトークンとJWTを検証し、正当であれば新しいトークンを生成して返す。
         csrf_token = csrf_protect.get_csrf_from_headers(headers)
         csrf_protect.validate_csrf(csrf_token)

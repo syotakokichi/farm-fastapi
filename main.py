@@ -1,13 +1,13 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from routers import route_todo, route_auth
+from routers import route_booking, route_auth
 from schemas import SuccessMsg, CsrfSettings
 from fastapi_csrf_protect import CsrfProtect
 from fastapi_csrf_protect.exceptions import CsrfProtectError
 
 app = FastAPI()
-app.include_router(route_todo.router)
+app.include_router(route_booking.router)
 app.include_router(route_auth.router)
 origins = ['http://localhost:3000']
 app.add_middleware(

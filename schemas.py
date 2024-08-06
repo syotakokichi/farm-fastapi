@@ -1,31 +1,44 @@
 from pydantic import BaseModel
-from typing import Optional
 from decouple import config
+from datetime import datetime
 
 CSRF_KEY = config('CSRF_KEY')
 
 class CsrfSettings(BaseModel):
     secret_key: str = CSRF_KEY
 
-class Todo(BaseModel):
-    id: str
-    title: str
-    description: str
+class Customer(BaseModel):
+    customer_id: str
+    name: str
+    email: str
 
-class TodoBody(BaseModel):
-    title: str
-    description: str
+class CustomerInfo(BaseModel):
+    customer_id: str
+    name: str
+    email: str
+
+class CustomerRegisterBody(BaseModel):
+    name: str
+    email: str
+    password: str
+
+class CustomerLoginBody(BaseModel):
+    email: str
+    password: str
 
 class SuccessMsg(BaseModel):
     message: str
 
-class UserInfo(BaseModel):
-    id: Optional[str] = None
-    email: str
+class Booking(BaseModel):
+    booking_id: str
+    customer_id: str
+    appointment_date: datetime
+    details: str
 
-class UserBody(BaseModel):
-    email: str
-    password: str
+class BookingBody(BaseModel):
+    customer_id: str
+    appointment_date: datetime
+    details: str
 
 class Csrf(BaseModel):
     csrf_token: str
